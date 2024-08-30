@@ -1,4 +1,3 @@
-
 import React from "react";
 import { UseWeatherAPPContext } from "../../Context/Context";
 
@@ -18,29 +17,30 @@ const HumidityComponents = () => {
     };
 
     const calculateAverageTemps = () => {
-        if (!daily || daily.length === 0) return { avgMaxTemp: 0, avgMinTemp: 0 };
-        
-        // Calculate the sum of max and min temperatures
+        if (!daily || daily.length === 0) return { avgMaxTemp: 0, avgMinTemp: 0, avgTemp: 0 };
+
+        // Calculate the sum of max, min, and average temperatures
         const totalMaxTemp = daily.reduce((sum, day) => sum + day.temp.max, 0);
-        
         const totalMinTemp = daily.reduce((sum, day) => sum + day.temp.min, 0);
-        
-        // Calculate the average of max and min temperatures
+        const totalAvgTemp = daily.reduce((sum, day) => sum + (day.temp.max + day.temp.min) / 2, 0);
+
+        // Calculate the average of max, min, and average temperatures
         const avgMaxTemp = Math.round(totalMaxTemp / daily.length);
         const avgMinTemp = Math.round(totalMinTemp / daily.length);
+        const avgTemp = Math.round(totalAvgTemp / daily.length);
 
-        return { avgMaxTemp, avgMinTemp };
+        return { avgMaxTemp, avgMinTemp, avgTemp };
     };
 
-    const { avgMaxTemp, avgMinTemp } = calculateAverageTemps();
+    const { avgTemp } = calculateAverageTemps();
 
     return (
         <>
             {current ? (
                 <div className='humidityWrap'>
                     <div className='humidityData'>
-                        <div className='title'>AVERAGE MAX & MIN TEMP (7 DAYS)</div>
-                        <div className='value'>{avgMaxTemp}<sup>°</sup>/{avgMinTemp}<sup>°</sup></div>
+                        <div className='title'>AVERAGE TEMP (7 DAYS)</div>
+                        <div className='value'>{avgTemp}<sup>°</sup></div>
                     </div>
                     <div className='humidityData'>
                         <div className='title'>MAX & MIN TEMP (CURRENT)</div>
